@@ -1,0 +1,31 @@
+<ion-navbar primary *navbar>
+    <ion-title>GitBuddy</ion-title>
+</ion-navbar>
+
+<ion-content class="page1">
+
+    <ion-list>
+        <ion-item *ngFor="#repo of repos">
+            <ion-avatar item-left>
+                <img src={{repo.owner.avatar_url}}>
+            </ion-avatar>
+            <h2>{{repo.name}}</h2>
+            <h3>{{repo.owner.login}}</h3>
+            <p>{{repo.description}}</p>
+            <ion-icon id="starIcon" name="star"></ion-icon>
+            {{repo.stargazers_count}}
+            <a id="stars" href={{repo.clone_url}}>View on Github</a>
+        </ion-item>
+    </ion-list>
+
+</ion-content>
+
+<section id="inputSection">
+    <ion-input id="searchInput">
+        <input #searchTerms type="text" placeholder="chat, typescript">
+    </ion-input>
+
+    <button (click)="search(searchTerms.value)" secondary fab fab-bottom fab-right>
+        <ion-icon name="search"></ion-icon>
+    </button>
+</section>
