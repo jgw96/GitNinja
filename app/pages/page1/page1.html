@@ -6,6 +6,7 @@
 
     <ion-list>
         <ion-item *ngFor="#repo of repos">
+            <ion-icon (click)="share(repo.clone_url)" id="share" item-right name="share"></ion-icon>
             <ion-avatar item-left>
                 <img src={{repo.owner.avatar_url}}>
             </ion-avatar>

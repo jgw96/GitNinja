@@ -19,7 +19,6 @@ export class Page1 {
             .map(res => res.json())
             .subscribe(data => {
                 this.repos = data.items;
-                console.log(this.repos)
             })
     }
 
@@ -43,5 +42,10 @@ export class Page1 {
                     this.nav.present(alert);
                 }
             })
+    }
+    
+    share(url: string) {
+        console.log(url);
+        window.plugins.socialsharing.share(null, null, null, url)
     }
 }
