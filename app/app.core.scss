@@ -28,6 +28,7 @@ ion-item-content {
 #stars {
     float: right;
     margin-top: 4%;
+    text-decoration-line: none;
 }
 
 #starIcon {
@@ -37,4 +38,8 @@ ion-item-content {
 #userLink {
     display: block;
     margin-top: 3%;
+}
+
+#forks {
+    margin-left: 5rem;
 }

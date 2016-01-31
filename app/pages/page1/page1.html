@@ -1,5 +1,5 @@
 <ion-navbar primary *navbar>
-    <ion-title>GitBuddy</ion-title>
+    <ion-title>GitNinja</ion-title>
 </ion-navbar>
 
 <ion-content class="page1">
@@ -14,6 +14,8 @@
             <p>{{repo.description}}</p>
             <ion-icon id="starIcon" name="star"></ion-icon>
             {{repo.stargazers_count}}
+            <ion-icon id="forks" name="shuffle"></ion-icon>
+            {{repo.forks_count}}
             <a id="stars" href={{repo.clone_url}}>View on Github</a>
         </ion-item>
     </ion-list>

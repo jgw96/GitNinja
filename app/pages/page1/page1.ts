@@ -19,6 +19,7 @@ export class Page1 {
             .map(res => res.json())
             .subscribe(data => {
                 this.repos = data.items;
+                console.log(this.repos)
             })
     }
 
