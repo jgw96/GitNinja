@@ -26,11 +26,13 @@ export class MyApp {
       // First, let's hide the keyboard accessory bar (only works natively) since
       // that's a better default:
       //
-      // Keyboard.setAccessoryBarVisible(false);
+      Keyboard.setAccessoryBarVisible(false);
       //
       // For example, we might change the StatusBar color. This one below is
       // good for dark backgrounds and light text:
       // StatusBar.setStyle(StatusBar.LIGHT_CONTENT)
+      
+      StatusBar.backgroundColorByHexString("#1565C0");
     });
   }
 }
