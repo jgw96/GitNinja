@@ -1,4 +1,4 @@
 # GitBuddy
 Fun Github search using the Github API and Ionic 2! 
 
-Search through github straight from your phone! Allows you to search both repos and users. Built with Ionic 2 and Typescript.
+Very rough code right now, everything works, but its ugly and my components are badly in need of having functionality split into services. 
