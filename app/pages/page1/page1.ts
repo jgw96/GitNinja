@@ -1,5 +1,5 @@
 import {Page, NavController, ViewController, Alert, Modal} from 'ionic-framework/ionic';
-import {Http} from 'angular2/http';
+import {Http, Headers} from 'angular2/http';
 import 'rxjs/add/operator/map';
 
 const greeting = () => {
@@ -12,7 +12,7 @@ const greeting = () => {
 }
 
 @Page({
-    templateUrl: 'build/pages/page1/page1.html',
+    templateUrl: 'build/pages/page1/page1.html'
 })
 export class Page1 {
     http: any;
@@ -24,6 +24,8 @@ export class Page1 {
         this.http = http;
         this.nav = nav;
         this.loading = true;
+        
+        localStorage.removeItem("authed");
 
         this.http.get("https://api.github.com/search/repositories?q=chat+language:typescript")
             .map(res => res.json())
@@ -82,9 +84,61 @@ export class Page1 {
         this.nav.present(modal)
     }
 
-    getStars(url) {
-        let modal = Modal.create(StarModal, url);
+    getStars(url, name) {
+        let modal = Modal.create(StarModal, { url: url, name: name });
         this.nav.present(modal);
+    }
+
+    login() {
+        let prompt = Alert.create({
+            title: 'Login',
+            body: "Login to Github",
+            inputs: [
+                {
+                    name: 'username',
+                    placeholder: 'username'
+                },
+                {
+                    name: "password",
+                    placeholder: "password",
+                    type: "password"
+                }
+            ],
+            buttons: [
+                {
+                    text: 'Cancel',
+                    handler: data => {
+                        console.log('Cancel clicked');
+                    }
+                },
+                {
+                    text: 'Login',
+                    handler: data => {
+                        console.log(data.username);
+                        let creds = "username=" + data.username + "&password=" + data.password;
+
+                        let headers = new Headers();
+                        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+                        this.http.post('http://104.197.63.74:8080/auth', creds, {
+                            headers: headers
+                        })
+                            .map(res => res.json())
+                            .subscribe(
+                            data => console.log(data),
+                            err => console.log("didnt work"),
+                            () => {
+                                localStorage.setItem("authed", "true")
+                                window.plugins.toast.showShortBottom('Logged In')
+                            }
+                            );
+
+                    }
+                }
+            ]
+        });
+        this.nav.present(prompt);
+
     }
 
 }
@@ -178,20 +232,26 @@ class MyModal {
             <a id="userLink" href={{user.html_url}}>Visit on Github</a>
         </ion-item>
     </ion-list>
-  </ion-content>`
+  </ion-content>
+  
+  <button (click)="star()" secondary fab fab-bottom fab-right>
+        <ion-icon name="star"></ion-icon>
+    </button>`
 })
 class StarModal {
     users: Object[];
     viewCtrl: any;
     http: any;
     public noStars: boolean;
+    nav: any;
 
-    constructor(http: Http, viewCtrl: ViewController) {
+    constructor(http: Http, viewCtrl: ViewController, nav: NavController) {
         this.viewCtrl = viewCtrl;
         this.http = http;
         this.noStars = false
+        this.nav = nav;
 
-        this.http.get(this.viewCtrl.data)
+        this.http.get(this.viewCtrl.data.url)
             .map(res => res.json())
             .subscribe(data => {
                 this.users = data;
@@ -199,6 +259,104 @@ class StarModal {
                     this.noStars = true;
                 }
             })
+
+    }
+
+    star() {
+        if (localStorage.getItem("authed") !== null) {
+            this.viewCtrl.dismiss();
+
+            let confirm = Alert.create({
+                title: 'Star this repository?',
+                body: 'Are you sure you would like to star this repository?',
+                buttons: [
+                    {
+                        text: 'No',
+                        handler: () => {
+                            console.log('Disagree clicked');
+                        }
+                    },
+                    {
+                        text: 'Yes',
+                        handler: () => {
+                            let value = "name=" + this.viewCtrl.data.name;
+
+                            let headers = new Headers();
+                            headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+                            this.http.post('http://104.197.63.74:8080/star', value, {
+                                headers: headers
+                            })
+                                .map(res => res.json())
+                                .subscribe(
+                                data => console.log(data),
+                                err => console.log("didnt work"),
+                                () => window.plugins.toast.showShortBottom('Repo Starred')
+                                );
+                        }
+                    }
+                ]
+            });
+            //this.nav.present(confirm);
+            setTimeout(() => {
+                this.nav.present(confirm);
+            }, 700)
+        }
+        else {
+            this.viewCtrl.dismiss();
+
+            let prompt = Alert.create({
+                title: 'Error',
+                body: "You must login to star a repository.",
+                inputs: [
+                    {
+                        name: 'username',
+                        placeholder: 'username'
+                    },
+                    {
+                        name: "password",
+                        placeholder: "password",
+                        type: "password"
+                    }
+                ],
+                buttons: [
+                    {
+                        text: 'Cancel',
+                        handler: data => {
+                            console.log('Cancel clicked');
+                        }
+                    },
+                    {
+                        text: 'Login',
+                        handler: data => {
+                            console.log(data.username);
+                            let creds = "username=" + data.username + "&password=" + data.password;
+
+                            let headers = new Headers();
+                            headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+                            this.http.post('http://104.197.63.74:8080/auth', creds, {
+                                headers: headers
+                            })
+                                .map(res => res.json())
+                                .subscribe(
+                                data => console.log(data),
+                                err => console.log("didnt work"),
+                                () => {
+                                    localStorage.setItem("authed", "true");
+                                    window.plugins.toast.showShortBottom('Logged In')
+                                }
+                                );
+
+                        }
+                    }
+                ]
+            });
+            //this.nav.present(confirm);
+            setTimeout(() => {
+                this.nav.present(prompt);
+            }, 700)
+        }
 
     }
 

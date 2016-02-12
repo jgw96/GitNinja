@@ -1,0 +1,99 @@
+<ion-navbar primary *navbar>
+    <button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+        Profile
+    </ion-title>
+</ion-navbar>
+
+<ion-content padding class="page5">
+
+    <div [hidden]="!loading" class="sk-fading-circle">
+        <div class="sk-circle1 sk-circle"></div>
+        <div class="sk-circle2 sk-circle"></div>
+        <div class="sk-circle3 sk-circle"></div>
+        <div class="sk-circle4 sk-circle"></div>
+        <div class="sk-circle5 sk-circle"></div>
+        <div class="sk-circle6 sk-circle"></div>
+        <div class="sk-circle7 sk-circle"></div>
+        <div class="sk-circle8 sk-circle"></div>
+        <div class="sk-circle9 sk-circle"></div>
+        <div class="sk-circle10 sk-circle"></div>
+        <div class="sk-circle11 sk-circle"></div>
+        <div class="sk-circle12 sk-circle"></div>
+    </div>
+    
+    <ion-card [hidden]="loading || !failed">
+        <ion-card-content>
+            <h2>Not Logged In</h2>
+            
+            <p>
+                You must be Logged in using your Github Account to view this page correctly.
+            </p>
+            
+            <button block secondary (click)="login()">Login</button>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card [hidden]="loading || failed">
+        <img [src]="profilePic" />
+        <ion-card-content>
+            <h2 [textContent]="name" class="card-title"></h2>
+            <ion-list no-lines>
+                <ion-item>
+                    <ion-icon name="mail" item-left></ion-icon>
+                    {{email}}
+                </ion-item>
+                <ion-item>
+                    <ion-icon name="code-working" item-left></ion-icon>
+                    {{company}}
+                </ion-item>
+                <ion-item>
+                    <ion-icon name="compass" item-left></ion-icon>
+                    {{location}}
+                </ion-item>
+            </ion-list>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card [hidden]="loading || failed">
+        <ion-card-content>
+            <h2 class="card-title">Stats</h2>
+            <ion-list no-lines>
+                <button (click)="getFollowers()" ion-item>
+                    Followers:
+                    {{followers}}
+                    <ion-icon name="information" item-right></ion-icon>
+                </button>
+                <button (click)="getFollowing()" ion-item>
+                    Following:
+                    {{following}}
+                    <ion-icon name="information" item-right></ion-icon>
+                </button>
+                <button (click)="navToRepos()" ion-item>
+                    Repositories:
+                    {{repos}}
+                    <ion-icon name="information" item-right></ion-icon>
+                </button>
+            </ion-list>
+        </ion-card-content>
+    </ion-card>
+    
+    <ion-card [hidden]="loading || failed">
+        <ion-card-content>
+            <h2 class="card-title">Notifications</h2>
+            <span id="notifications">{{notifyLength}}</span>
+            <ion-list>
+                <ion-item *ngFor="#notification of notifications">
+                    <h2>{{notification.reason}}</h2>
+                    <h3>Repo Name: {{notification.repository.full_name}}</h3>
+                    <h3>Title: {{notification.subject.title}}</h3>
+                    <h3>Type: {{notification.subject.type}}</h3>
+                    <ion-icon name="notifications" item-right></ion-icon>
+                </ion-item>
+            </ion-list>
+        </ion-card-content>
+    </ion-card>
+
+</ion-content>

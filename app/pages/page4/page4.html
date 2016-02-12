@@ -2,16 +2,10 @@
     <button menuToggle>
         <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Home</ion-title>
-    <ion-buttons start>
-        <button (click)="login()">
-            <span primary showWhen="ios">login</span>
-            <ion-icon name='person' showWhen="android"></ion-icon>
-        </button>
-    </ion-buttons>
+    <ion-title>My Repositories</ion-title>
 </ion-navbar>
 
-<ion-content class="page1">
+<ion-content class="page4">
 
     <div [hidden]="!loading" class="sk-fading-circle">
         <div class="sk-circle1 sk-circle"></div>
@@ -31,11 +25,9 @@
     <ion-list [hidden]="loading">
         <ion-item *ngFor="#repo of repos">
             <ion-icon (click)="share(repo.clone_url)" id="share" item-right name="share"></ion-icon>
-            <ion-avatar item-left>
-                <img src={{repo.owner.avatar_url}}>
-            </ion-avatar>
-            <h2>{{repo.name}}</h2>
-            <h3>{{repo.owner.login}}</h3>
+            <h2>{{repo.full_name}}</h2>
+            <h3>Language: {{repo.language}}</h3>
+            <h3>Default Branch: {{repo.default_branch}}</h3>
             <p>{{repo.description}}</p>
 
             <button id="starIcon" (click)="getStars(repo.stargazers_url, repo.full_name)" clear>
@@ -58,12 +50,6 @@
 
 </ion-content>
 
-<section id="inputSection">
-    <ion-input id="searchInput">
-        <input #searchTerms type="text" placeholder="chat, typescript">
-    </ion-input>
-
-    <button (click)="search(searchTerms.value)" secondary fab fab-bottom fab-right>
-        <ion-icon name="search"></ion-icon>
-    </button>
-</section>
+<button (click)="makeRepo()" secondary fab fab-bottom fab-right>
+    <ion-icon name="add"></ion-icon>
+</button>

@@ -1,6 +1,9 @@
 <ion-navbar primary *navbar>
+    <button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-title>
-        Users
+        Search Users
     </ion-title>
 </ion-navbar>
 
@@ -21,6 +24,7 @@
     </div>
     <ion-list [hidden]="loading">
         <ion-item *ngFor="#user of users">
+            <ion-icon secondary (click)="follow(user.login)" id="share" item-right name="md-heart"></ion-icon>
             <ion-avatar item-left>
                 <img src={{user.avatar_url}}>
             </ion-avatar>
