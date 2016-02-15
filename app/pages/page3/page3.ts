@@ -121,7 +121,10 @@ export class Page3 {
                                 .map(res => res.json())
                                 .subscribe(
                                 data => console.log(data),
-                                err => console.log("didnt work"),
+                                err => { 
+                                    console.log("didnt work");
+                                    window.plugin.notification.local.add({title: "Login failed", message: 'Login failed, please try again!' });
+                                },
                                 () => {
                                     localStorage.setItem("authed", "true");
                                     window.plugins.toast.showShortBottom('Logged In')

@@ -24,7 +24,8 @@
     "cordova-plugin-splashscreen",
     "ionic-plugin-keyboard",
     "cordova-plugin-statusbar",
-    "cordova-plugin-x-toast"
+    "cordova-plugin-x-toast",
+    "cordova-plugin-admobpro"
   ],
   "cordovaPlatforms": [
     "android",

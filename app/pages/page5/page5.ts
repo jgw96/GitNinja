@@ -49,20 +49,20 @@ export class Page5 {
 
             }
             )
-            
-         this.http.get("http://104.197.63.74:8080/notifications")
-         .map(res => res.json())
-         .subscribe(data => {
-             this.loading = false;
-             console.log(data);
-             this.notifications = data;
-             this.notifyLength = data.length;
-         },
-         err => {
-             this.loading = false;
-             this.failed = true;
-             console.log(err);
-         })
+
+        this.http.get("http://104.197.63.74:8080/notifications")
+            .map(res => res.json())
+            .subscribe(data => {
+                this.loading = false;
+                console.log(data);
+                this.notifications = data;
+                this.notifyLength = data.length;
+            },
+            err => {
+                this.loading = false;
+                this.failed = true;
+                console.log(err);
+            })
 
     }
 
@@ -117,7 +117,10 @@ export class Page5 {
                             .map(res => res.json())
                             .subscribe(
                             data => console.log(data),
-                            err => console.log("didnt work"),
+                            err => {
+                                console.log("didnt work");
+                                window.plugin.notification.local.add({ title: "Login failed", message: 'Login failed, please try again!' });
+                            },
                             () => {
                                 localStorage.setItem("authed", "true");
                                 this.http.get(`http://104.197.63.74:8080/me`)

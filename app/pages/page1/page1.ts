@@ -24,7 +24,7 @@ export class Page1 {
         this.http = http;
         this.nav = nav;
         this.loading = true;
-        
+
         localStorage.removeItem("authed");
 
         this.http.get("https://api.github.com/search/repositories?q=chat+language:typescript")
@@ -126,12 +126,16 @@ export class Page1 {
                             .map(res => res.json())
                             .subscribe(
                             data => console.log(data),
-                            err => console.log("didnt work"),
+                            err => {
+                                console.log("didnt work")
+                                window.plugin.notification.local.add({ title: "Login failed", message: 'Login failed, please try again!' });
+                            },
                             () => {
                                 localStorage.setItem("authed", "true")
                                 window.plugins.toast.showShortBottom('Logged In')
                             }
                             );
+
 
                     }
                 }
@@ -341,7 +345,10 @@ class StarModal {
                                 .map(res => res.json())
                                 .subscribe(
                                 data => console.log(data),
-                                err => console.log("didnt work"),
+                                err => {
+                                    console.log("didnt work");
+                                    window.plugin.notification.local.add({ title: "Login failed", message: 'Login failed, please try again!' });
+                                },
                                 () => {
                                     localStorage.setItem("authed", "true");
                                     window.plugins.toast.showShortBottom('Logged In')
