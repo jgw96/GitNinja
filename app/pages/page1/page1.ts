@@ -2,15 +2,6 @@ import {Page, NavController, ViewController, Alert, Modal} from 'ionic-framework
 import {Http, Headers} from 'angular2/http';
 import 'rxjs/add/operator/map';
 
-const greeting = () => {
-    if (localStorage.getItem("firstTime") === null) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-
 @Page({
     templateUrl: 'build/pages/page1/page1.html'
 })
@@ -32,19 +23,6 @@ export class Page1 {
             .subscribe(data => {
                 this.loading = false;
                 this.repos = data.items;
-
-                if (greeting() === true) {
-                    let alert = Alert.create({
-                        title: 'Welcome',
-                        message: `GitNinja allows you to easily and instantly search through the most popular Github repos!
-                                    You can search two ways, either by entering something like "chat, typescript" which will search for 
-                                    repos that are chat applications written in typescript, or just enter simple search terms like "chat" or "python" etc.
-                                    You can also search users by name, this will automatically pull users with that name that have atleast 30 followers and 3 repos!`,
-                        buttons: ['Dismiss']
-                    });
-                    this.nav.present(alert);
-                    localStorage.setItem("firstTime", "Truth");
-                }
             })
 
     }
@@ -75,7 +53,6 @@ export class Page1 {
     }
 
     share(url: string) {
-        console.log(url);
         window.plugins.socialsharing.share(null, null, null, url)
     }
 
@@ -87,62 +64,6 @@ export class Page1 {
     getStars(url, name) {
         let modal = Modal.create(StarModal, { url: url, name: name });
         this.nav.present(modal);
-    }
-
-    login() {
-        let prompt = Alert.create({
-            title: 'Login',
-            body: "Login to Github",
-            inputs: [
-                {
-                    name: 'username',
-                    placeholder: 'username'
-                },
-                {
-                    name: "password",
-                    placeholder: "password",
-                    type: "password"
-                }
-            ],
-            buttons: [
-                {
-                    text: 'Cancel',
-                    handler: data => {
-                        console.log('Cancel clicked');
-                    }
-                },
-                {
-                    text: 'Login',
-                    handler: data => {
-                        console.log(data.username);
-                        let creds = "username=" + data.username + "&password=" + data.password;
-
-                        let headers = new Headers();
-                        headers.append('Content-Type', 'application/x-www-form-urlencoded');
-
-                        this.http.post('http://104.197.63.74:8080/auth', creds, {
-                            headers: headers
-                        })
-                            .map(res => res.json())
-                            .subscribe(
-                            data => console.log(data),
-                            err => {
-                                console.log("didnt work")
-                                window.plugin.notification.local.add({ title: "Login failed", message: 'Login failed, please try again!' });
-                            },
-                            () => {
-                                localStorage.setItem("authed", "true")
-                                window.plugins.toast.showShortBottom('Logged In')
-                            }
-                            );
-
-
-                    }
-                }
-            ]
-        });
-        this.nav.present(prompt);
-
     }
 
 }
@@ -248,12 +169,17 @@ class StarModal {
     http: any;
     public noStars: boolean;
     nav: any;
+    username: string;
+    password: string;
 
     constructor(http: Http, viewCtrl: ViewController, nav: NavController) {
         this.viewCtrl = viewCtrl;
         this.http = http;
         this.noStars = false
         this.nav = nav;
+
+        this.username = localStorage.getItem("username");
+        this.password = localStorage.getItem("password");
 
         this.http.get(this.viewCtrl.data.url)
             .map(res => res.json())
@@ -277,18 +203,37 @@ class StarModal {
                     {
                         text: 'No',
                         handler: () => {
-                            console.log('Disagree clicked');
                         }
                     },
                     {
                         text: 'Yes',
                         handler: () => {
+                            let creds = "username=" + this.username + "&password=" + this.password;
+
+                            let loginHeaders = new Headers();
+                            loginHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
+
+                            this.http.post('http://104.154.34.219:8080/auth', creds, {
+                                headers: loginHeaders
+                            })
+                                .map(res => res.json())
+                                .subscribe(
+                                data => console.log(data),
+                                err => {
+                                    window.plugin.notification.local.add({ title: "Login failed", message: 'Login failed, please try again!' });
+                                },
+                                () => {
+
+                                }
+                                );
+
+
                             let value = "name=" + this.viewCtrl.data.name;
 
                             let headers = new Headers();
                             headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
-                            this.http.post('http://104.197.63.74:8080/star', value, {
+                            this.http.post('http://104.154.34.219:8080/star', value, {
                                 headers: headers
                             })
                                 .map(res => res.json())
@@ -327,26 +272,24 @@ class StarModal {
                     {
                         text: 'Cancel',
                         handler: data => {
-                            console.log('Cancel clicked');
+
                         }
                     },
                     {
                         text: 'Login',
                         handler: data => {
-                            console.log(data.username);
                             let creds = "username=" + data.username + "&password=" + data.password;
 
                             let headers = new Headers();
                             headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
-                            this.http.post('http://104.197.63.74:8080/auth', creds, {
+                            this.http.post('http://104.154.34.219:8080/auth', creds, {
                                 headers: headers
                             })
                                 .map(res => res.json())
                                 .subscribe(
                                 data => console.log(data),
                                 err => {
-                                    console.log("didnt work");
                                     window.plugin.notification.local.add({ title: "Login failed", message: 'Login failed, please try again!' });
                                 },
                                 () => {

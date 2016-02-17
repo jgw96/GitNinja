@@ -10,13 +10,37 @@ export class Page4 {
     nav: any;
     repos: any[];
     public loading: boolean;
+    username: string;
+    password: string;
 
     constructor(http: Http, nav: NavController) {
         this.http = http;
         this.nav = nav;
         this.loading = true;
 
-        this.http.get(`http://104.197.63.74:8080/myrepos`)
+        this.username = localStorage.getItem("username");
+        this.password = localStorage.getItem("password");
+
+        let creds = "username=" + this.username + "&password=" + this.password;
+
+        let loginHeaders = new Headers();
+        loginHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
+
+        this.http.post('http://104.154.34.219:8080/auth', creds, {
+            headers: loginHeaders
+        })
+            .map(res => res.json())
+            .subscribe(
+            data => console.log(data),
+            err => {
+                window.plugin.notification.local.add({ title: "Login failed", message: 'Login failed, please try again!' });
+            },
+            () => {
+
+            }
+            );
+
+        this.http.get(`http://104.154.34.219:8080/myrepos`)
             .map(res => res.json())
             .subscribe(data => {
                 if (data.length > 0) {
@@ -47,19 +71,39 @@ export class Page4 {
                 {
                     text: 'Cancel',
                     handler: data => {
-                        console.log('Cancel clicked');
+
                     }
                 },
                 {
                     text: 'Make',
                     handler: data => {
-                        console.log(data);
+                        let credsTwo = "username=" + this.username + "&password=" + this.password;
+
+                        let loginHeaders = new Headers();
+                        loginHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
+
+                        this.http.post('http://104.154.34.219:8080/auth', credsTwo, {
+                            headers: loginHeaders
+                        })
+                            .map(res => res.json())
+                            .subscribe(
+                            data => console.log(data),
+                            err => {
+                                window.plugin.notification.local.add({ title: "Login failed", message: 'Login failed, please try again!' });
+                            },
+                            () => {
+
+                            }
+                            );
+
+
+
                         let creds = "name=" + data.name + "&description=" + data.description;
 
                         let headers = new Headers();
                         headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
-                        this.http.post('http://104.197.63.74:8080/makerepo', creds, {
+                        this.http.post('http://104.154.34.219:8080/makerepo', creds, {
                             headers: headers
                         })
                             .map(res => res.json())
@@ -79,12 +123,10 @@ export class Page4 {
     }
 
     share(url: string) {
-        console.log(url);
         window.plugins.socialsharing.share(null, null, null, url)
     }
 
     getForks(url) {
-        console.log(url);
         let modal = Modal.create(MyModal, url);
         this.nav.present(modal)
     }
@@ -135,11 +177,35 @@ class MyModal {
     viewCtrl: any;
     http: any;
     public noForks: boolean;
+    username: string;
+    password: string;
 
     constructor(http: Http, viewCtrl: ViewController) {
         this.viewCtrl = viewCtrl;
         this.http = http;
         this.noForks = false;
+
+        this.username = localStorage.getItem("username");
+        this.password = localStorage.getItem("password");
+
+        let creds = "username=" + this.username + "&password=" + this.password;
+
+        let loginHeaders = new Headers();
+        loginHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
+
+        this.http.post('http://104.154.34.219:8080/auth', creds, {
+            headers: loginHeaders
+        })
+            .map(res => res.json())
+            .subscribe(
+            data => console.log(data),
+            err => {
+                window.plugin.notification.local.add({ title: "Login failed", message: 'Login failed, please try again!' });
+            },
+            () => {
+
+            }
+            );
 
         this.http.get(this.viewCtrl.data)
             .map(res => res.json())
@@ -202,12 +268,36 @@ class StarModal {
     http: any;
     public noStars: boolean;
     nav: any;
+    username: string;
+    password: string;
 
     constructor(http: Http, viewCtrl: ViewController, nav: NavController) {
         this.viewCtrl = viewCtrl;
         this.http = http;
         this.noStars = false
         this.nav = nav;
+
+        this.username = localStorage.getItem("username");
+        this.password = localStorage.getItem("password");
+
+        let creds = "username=" + this.username + "&password=" + this.password;
+
+        let loginHeaders = new Headers();
+        loginHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
+
+        this.http.post('http://104.154.34.219:8080/auth', creds, {
+            headers: loginHeaders
+        })
+            .map(res => res.json())
+            .subscribe(
+            data => console.log(data),
+            err => {
+                window.plugin.notification.local.add({ title: "Login failed", message: 'Login failed, please try again!' });
+            },
+            () => {
+
+            }
+            );
 
         this.http.get(this.viewCtrl.data.url)
             .map(res => res.json())
@@ -234,18 +324,37 @@ class StarModal {
                     {
                         text: 'No',
                         handler: () => {
-                            console.log('Disagree clicked');
                         }
                     },
                     {
                         text: 'Yes',
                         handler: () => {
+                            let creds = "username=" + this.username + "&password=" + this.password;
+
+                            let loginHeaders = new Headers();
+                            loginHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
+
+                            this.http.post('http://104.154.34.219:8080/auth', creds, {
+                                headers: loginHeaders
+                            })
+                                .map(res => res.json())
+                                .subscribe(
+                                data => console.log(data),
+                                err => {
+                                    window.plugin.notification.local.add({ title: "Login failed", message: 'Login failed, please try again!' });
+                                },
+                                () => {
+
+                                }
+                                );
+                            
+                            
                             let value = "name=" + this.viewCtrl.data.name;
 
                             let headers = new Headers();
                             headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
-                            this.http.post('http://104.197.63.74:8080/star', value, {
+                            this.http.post('http://104.154.34.219:8080/star', value, {
                                 headers: headers
                             })
                                 .map(res => res.json())
@@ -284,26 +393,23 @@ class StarModal {
                     {
                         text: 'Cancel',
                         handler: data => {
-                            console.log('Cancel clicked');
                         }
                     },
                     {
                         text: 'Login',
                         handler: data => {
-                            console.log(data.username);
                             let creds = "username=" + data.username + "&password=" + data.password;
 
                             let headers = new Headers();
                             headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
-                            this.http.post('http://104.197.63.74:8080/auth', creds, {
+                            this.http.post('http://104.154.34.219:8080/auth', creds, {
                                 headers: headers
                             })
                                 .map(res => res.json())
                                 .subscribe(
                                 data => console.log(data),
                                 err => {
-                                    console.log("didnt work");
                                     window.plugin.notification.local.add({ title: "Login failed", message: 'Login failed, please try again!' });
                                 },
                                 () => {

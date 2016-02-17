@@ -1,7 +1,7 @@
 <?xml version="2.0" encoding="UTF-8" standalone="yes"?>
 <widget id="io.ionic.gitninja" version="2.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>GitNinja</name>
-  <description>GitNinja is your virtual github friend! GitNinja gives you the best and most beautiful way to search github on your Android device!</description>
+  <description>GitNinja is your virtual Github friend! GitNinja gives you the best and most beautiful Github client available on Android!</description>
   <author email="jgw9617@gmail.com" href="http://ionicframework.com/">Justin Willis</author>
   <content src="index.html"/>
   <access origin="*"/>

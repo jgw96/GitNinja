@@ -1,6 +1,6 @@
-
 import {App, IonicApp, Platform} from 'ionic-framework/ionic';
 
+import {Login} from './pages/login/login';
 import {Page1} from './pages/page1/page1';
 import {Page2} from './pages/page2/page2';
 import {Page3} from './pages/page3/page3';
@@ -10,12 +10,15 @@ import {Page5} from './pages/page5/page5';
 // https://angular.io/docs/ts/latest/api/core/Type-interface.html
 import {Type} from 'angular2/core';
 
+import {enableProdMode} from 'angular2/core';
+enableProdMode();
+
 @App({
     templateUrl: 'build/app.html',
     config: {} // http://ionicframework.com/docs/v2/api/config/Config/
 })
 class MyApp {
-    rootPage: Type = Page1;
+    rootPage: Type = Login;
     pages: Array<{ title: string, component: Type }>
 
     constructor(private app: IonicApp, private platform: Platform) {
@@ -66,7 +69,7 @@ class MyApp {
 
             setInterval(() => {
                 if (AdMob) AdMob.prepareInterstitial({ adId: admobid.interstitial, autoShow: true, }, () => {
-                    console.log("success");
+                    
                 });
             }, 300000);
 

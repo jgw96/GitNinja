@@ -22,6 +22,8 @@ export class Page5 {
     public following: number;
     public notifications: any[];
     public notifyLength: number;
+    public username: string;
+    public password: string;
 
     constructor(http: Http, nav: NavController) {
         this.http = http;
@@ -29,11 +31,32 @@ export class Page5 {
         this.loading = true;
         this.failed = false;
 
-        this.http.get(`http://104.197.63.74:8080/me`)
+        this.username = localStorage.getItem("username");
+        this.password = localStorage.getItem("password");
+
+        let creds = "username=" + this.username + "&password=" + this.password;
+
+        let loginHeaders = new Headers();
+        loginHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
+
+        this.http.post('http://104.154.34.219:8080/auth', creds, {
+            headers: loginHeaders
+        })
+            .map(res => res.json())
+            .subscribe(
+            data => console.log(data),
+            err => {
+                window.plugin.notification.local.add({ title: "Login failed", message: 'Login failed, please try again!' });
+            },
+            () => {
+
+            }
+            );
+
+        this.http.get(`http://104.154.34.219:8080/me`)
             .map(res => res.json())
             .subscribe(data => {
                 this.loading = false;
-                console.log(data);
                 this.profilePic = data.avatar_url;
                 this.name = data.name;
                 this.company = data.company;
@@ -50,18 +73,35 @@ export class Page5 {
             }
             )
 
-        this.http.get("http://104.197.63.74:8080/notifications")
+        let credsTwo = "username=" + this.username + "&password=" + this.password;
+
+        let loginHeadersTwo = new Headers();
+        loginHeadersTwo.append('Content-Type', 'application/x-www-form-urlencoded');
+
+        this.http.post('http://104.154.34.219:8080/auth', credsTwo, {
+            headers: loginHeaders
+        })
+            .map(res => res.json())
+            .subscribe(
+            data => console.log(data),
+            err => {
+                window.plugin.notification.local.add({ title: "Login failed", message: 'Login failed, please try again!' });
+            },
+            () => {
+
+            }
+            );
+
+        this.http.get("http://104.154.34.219:8080/notifications")
             .map(res => res.json())
             .subscribe(data => {
                 this.loading = false;
-                console.log(data);
                 this.notifications = data;
                 this.notifyLength = data.length;
             },
             err => {
                 this.loading = false;
                 this.failed = true;
-                console.log(err);
             })
 
     }
@@ -99,36 +139,32 @@ export class Page5 {
                 {
                     text: 'Cancel',
                     handler: data => {
-                        console.log('Cancel clicked');
                     }
                 },
                 {
                     text: 'Login',
                     handler: data => {
-                        console.log(data.username);
                         let creds = "username=" + data.username + "&password=" + data.password;
 
                         let headers = new Headers();
                         headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
-                        this.http.post('http://104.197.63.74:8080/auth', creds, {
+                        this.http.post('http://104.154.34.219:8080/auth', creds, {
                             headers: headers
                         })
                             .map(res => res.json())
                             .subscribe(
                             data => console.log(data),
                             err => {
-                                console.log("didnt work");
                                 window.plugin.notification.local.add({ title: "Login failed", message: 'Login failed, please try again!' });
                             },
                             () => {
                                 localStorage.setItem("authed", "true");
-                                this.http.get(`http://104.197.63.74:8080/me`)
+                                this.http.get(`http://104.154.34.219:8080/me`)
                                     .map(res => res.json())
                                     .subscribe(data => {
                                         this.loading = false;
                                         this.failed = false;
-                                        console.log(data);
                                         this.profilePic = data.avatar_url;
                                         this.name = data.name;
                                         this.company = data.company;
@@ -185,17 +221,40 @@ class MyModal {
     viewCtrl: any;
     http: any;
     followers: any[];
+    username: string;
+    password: string;
 
     constructor(http: Http, viewCtrl: ViewController) {
         this.viewCtrl = viewCtrl;
         this.http = http;
 
-        this.http.get(`http://104.197.63.74:8080/ifollow`)
+        this.username = localStorage.getItem("username");
+        this.password = localStorage.getItem("password");
+
+        let creds = "username=" + this.username + "&password=" + this.password;
+
+        let loginHeaders = new Headers();
+        loginHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
+
+        this.http.post('http://104.154.34.219:8080/auth', creds, {
+            headers: loginHeaders
+        })
+            .map(res => res.json())
+            .subscribe(
+            data => console.log(data),
+            err => {
+                window.plugin.notification.local.add({ title: "Login failed", message: 'Login failed, please try again!' });
+            },
+            () => {
+
+            }
+            );
+
+        this.http.get(`http://104.154.34.219:8080/ifollow`)
             .map(res => res.json())
             .subscribe(data => {
                 if (data.length > 0) {
                     this.followers = data;
-                    console.log(data);
                 }
 
             })
@@ -235,17 +294,40 @@ class Followers {
     viewCtrl: any;
     http: any;
     followMe: any[];
+    username: string;
+    password: string;
 
     constructor(http: Http, viewCtrl: ViewController) {
         this.viewCtrl = viewCtrl;
         this.http = http;
 
-        this.http.get(`http://104.197.63.74:8080/followme`)
+        this.username = localStorage.getItem("username");
+        this.password = localStorage.getItem("password");
+
+        let creds = "username=" + this.username + "&password=" + this.password;
+
+        let loginHeaders = new Headers();
+        loginHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
+
+        this.http.post('http://104.154.34.219:8080/auth', creds, {
+            headers: loginHeaders
+        })
+            .map(res => res.json())
+            .subscribe(
+            data => console.log(data),
+            err => {
+                window.plugin.notification.local.add({ title: "Login failed", message: 'Login failed, please try again!' });
+            },
+            () => {
+
+            }
+            );
+
+        this.http.get(`http://104.154.34.219:8080/followme`)
             .map(res => res.json())
             .subscribe(data => {
                 if (data.length > 0) {
                     this.followMe = data;
-                    console.log(data);
                 }
 
             })

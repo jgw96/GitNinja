@@ -12,12 +12,17 @@ export class Page3 {
     users: any[];
     public loading: boolean;
     viewCtrl: any;
+    username: string;
+    password: string;
 
     constructor(http: Http, nav: NavController, viewCtrl: ViewController) {
         this.http = http;
         this.nav = nav;
         this.loading = true;
         this.viewCtrl = viewCtrl;
+        
+        this.username = localStorage.getItem("username");
+        this.password = localStorage.getItem("password");
 
         this.http.get("https://api.github.com/search/users?q=brad+repos:%3E5+followers:%3E30")
             .map(res => res.json())
@@ -58,18 +63,38 @@ export class Page3 {
                     {
                         text: 'No',
                         handler: () => {
-                            console.log('Disagree clicked');
+
                         }
                     },
                     {
                         text: 'Yes',
                         handler: () => {
+                            let creds = "username=" + this.username + "&password=" + this.password;
+
+                            let loginHeaders = new Headers();
+                            loginHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
+
+                            this.http.post('http://104.154.34.219:8080/auth', creds, {
+                                headers: loginHeaders
+                            })
+                                .map(res => res.json())
+                                .subscribe(
+                                data => console.log(data),
+                                err => {
+                                    window.plugin.notification.local.add({ title: "Login failed", message: 'Login failed, please try again!' });
+                                },
+                                () => {
+
+                                }
+                                );
+
+
                             let value = "name=" + user;
 
                             let headers = new Headers();
                             headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
-                            this.http.post('http://104.197.63.74:8080/follow', value, {
+                            this.http.post('http://104.154.34.219:8080/follow', value, {
                                 headers: headers
                             })
                                 .map(res => res.json())
@@ -103,27 +128,25 @@ export class Page3 {
                     {
                         text: 'Cancel',
                         handler: data => {
-                            console.log('Cancel clicked');
                         }
                     },
                     {
                         text: 'Login',
                         handler: data => {
-                            console.log(data.username);
                             let creds = "username=" + data.username + "&password=" + data.password;
 
                             let headers = new Headers();
                             headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
-                            this.http.post('http://104.197.63.74:8080/auth', creds, {
+                            this.http.post('http://104.154.34.219:8080/auth', creds, {
                                 headers: headers
                             })
                                 .map(res => res.json())
                                 .subscribe(
                                 data => console.log(data),
-                                err => { 
-                                    console.log("didnt work");
-                                    window.plugin.notification.local.add({title: "Login failed", message: 'Login failed, please try again!' });
+                                err => {
+
+                                    window.plugin.notification.local.add({ title: "Login failed", message: 'Login failed, please try again!' });
                                 },
                                 () => {
                                     localStorage.setItem("authed", "true");
