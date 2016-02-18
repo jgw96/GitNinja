@@ -55,7 +55,7 @@ export class Page3 {
     }
 
     follow(user: string) {
-        if (localStorage.getItem("authed") !== null) {
+        if (localStorage.getItem("authed") === null) {
             let confirm = Alert.create({
                 title: 'Follow this user?',
                 body: 'Are you sure you would like to follow this user?',

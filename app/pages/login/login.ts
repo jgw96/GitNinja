@@ -3,12 +3,10 @@ import {Page1} from '../../pages/page1/page1';
 import {Http, Headers} from 'angular2/http';
 import 'rxjs/add/operator/map';
 
-
 @Page({
     templateUrl: 'build/pages/login/login.html',
 })
 export class Login {
-
 
     constructor(public nav: NavController, public http: Http) {
         this.nav = nav;
@@ -42,6 +40,10 @@ export class Login {
             }
             );
 
+    }
+    
+    focusFix() {
+        
     }
 
 }

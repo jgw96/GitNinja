@@ -2,11 +2,11 @@
     
     <img id="loginImage" src="icon.png">
 
-    <ion-input id="usernameInput">
+    <ion-input (touchstart)="focusFix()" id="usernameInput">
         <input #username type="text" placeholder="username">
     </ion-input>
 
-    <ion-input>
+    <ion-input id="passwordInput">
         <input #password type="password" placeholder="password">
     </ion-input>
 

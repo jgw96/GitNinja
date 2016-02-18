@@ -314,7 +314,7 @@ class StarModal {
     }
 
     star() {
-        if (localStorage.getItem("authed") !== null) {
+        if (localStorage.getItem("authed") === null) {
             this.viewCtrl.dismiss();
 
             let confirm = Alert.create({
