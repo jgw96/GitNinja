@@ -20,7 +20,7 @@ export class Page3 {
         this.nav = nav;
         this.loading = true;
         this.viewCtrl = viewCtrl;
-        
+
         this.username = localStorage.getItem("username");
         this.password = localStorage.getItem("password");
 
@@ -55,112 +55,58 @@ export class Page3 {
     }
 
     follow(user: string) {
-        if (localStorage.getItem("authed") === null) {
-            let confirm = Alert.create({
-                title: 'Follow this user?',
-                body: 'Are you sure you would like to follow this user?',
-                buttons: [
-                    {
-                        text: 'No',
-                        handler: () => {
+        let confirm = Alert.create({
+            title: 'Follow this user?',
+            message: 'Are you sure you would like to follow this user?',
+            buttons: [
+                {
+                    text: 'No',
+                    handler: () => {
 
-                        }
-                    },
-                    {
-                        text: 'Yes',
-                        handler: () => {
-                            let creds = "username=" + this.username + "&password=" + this.password;
-
-                            let loginHeaders = new Headers();
-                            loginHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
-
-                            this.http.post('http://104.154.34.219:8080/auth', creds, {
-                                headers: loginHeaders
-                            })
-                                .map(res => res.json())
-                                .subscribe(
-                                data => console.log(data),
-                                err => {
-                                    window.plugin.notification.local.add({ title: "Login failed", message: 'Login failed, please try again!' });
-                                },
-                                () => {
-
-                                }
-                                );
-
-
-                            let value = "name=" + user;
-
-                            let headers = new Headers();
-                            headers.append('Content-Type', 'application/x-www-form-urlencoded');
-
-                            this.http.post('http://104.154.34.219:8080/follow', value, {
-                                headers: headers
-                            })
-                                .map(res => res.json())
-                                .subscribe(
-                                data => console.log(data),
-                                err => console.log("didnt work"),
-                                () => window.plugins.toast.showShortBottom('User Followed')
-                                );
-                        }
                     }
-                ]
-            });
-            this.nav.present(confirm);
-        }
-        else {
-            let prompt = Alert.create({
-                title: 'Error',
-                body: "You must login to follow a user.",
-                inputs: [
-                    {
-                        name: 'username',
-                        placeholder: 'username'
-                    },
-                    {
-                        name: "password",
-                        placeholder: "password",
-                        type: "password"
+                },
+                {
+                    text: 'Yes',
+                    handler: () => {
+                        let creds = "username=" + this.username + "&password=" + this.password;
+
+                        let loginHeaders = new Headers();
+                        loginHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
+
+                        this.http.post('http://104.154.34.219:8080/auth', creds, {
+                            headers: loginHeaders
+                        })
+                            .map(res => res.json())
+                            .subscribe(
+                            data => console.log(data),
+                            err => {
+                                window.plugin.notification.local.add({ title: "Login failed", message: 'Login failed, please try again!' });
+                            },
+                            () => {
+
+                            }
+                            );
+
+
+                        let value = "name=" + user;
+
+                        let headers = new Headers();
+                        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+                        this.http.post('http://104.154.34.219:8080/follow', value, {
+                            headers: headers
+                        })
+                            .map(res => res.json())
+                            .subscribe(
+                            data => console.log(data),
+                            err => console.log("didnt work"),
+                            () => window.plugins.toast.showShortBottom('User Followed')
+                            );
                     }
-                ],
-                buttons: [
-                    {
-                        text: 'Cancel',
-                        handler: data => {
-                        }
-                    },
-                    {
-                        text: 'Login',
-                        handler: data => {
-                            let creds = "username=" + data.username + "&password=" + data.password;
-
-                            let headers = new Headers();
-                            headers.append('Content-Type', 'application/x-www-form-urlencoded');
-
-                            this.http.post('http://104.154.34.219:8080/auth', creds, {
-                                headers: headers
-                            })
-                                .map(res => res.json())
-                                .subscribe(
-                                data => console.log(data),
-                                err => {
-
-                                    window.plugin.notification.local.add({ title: "Login failed", message: 'Login failed, please try again!' });
-                                },
-                                () => {
-                                    localStorage.setItem("authed", "true");
-                                    window.plugins.toast.showShortBottom('Logged In')
-                                }
-                                );
-
-                        }
-                    }
-                ]
-            });
-            this.nav.present(prompt);
-
-        }
+                }
+            ]
+        });
+        this.nav.present(confirm);
     }
 
 }

@@ -2,6 +2,7 @@ import {Page, NavController, ViewController, Alert, Modal} from 'ionic-framework
 import {Http, Headers} from 'angular2/http';
 import 'rxjs/add/operator/map';
 
+
 @Page({
     templateUrl: 'build/pages/page4/page4.html'
 })
@@ -56,7 +57,7 @@ export class Page4 {
     makeRepo() {
         let prompt = Alert.create({
             title: 'New Repository',
-            body: "Make a new Repository",
+            message: "Make a new Repository",
             inputs: [
                 {
                     name: 'name',
@@ -139,6 +140,7 @@ export class Page4 {
 
 
 }
+
 
 @Page({
     template: `
@@ -314,123 +316,62 @@ class StarModal {
     }
 
     star() {
-        if (localStorage.getItem("authed") === null) {
-            this.viewCtrl.dismiss();
-
-            let confirm = Alert.create({
-                title: 'Star this repository?',
-                body: 'Are you sure you would like to star this repository?',
-                buttons: [
-                    {
-                        text: 'No',
-                        handler: () => {
-                        }
-                    },
-                    {
-                        text: 'Yes',
-                        handler: () => {
-                            let creds = "username=" + this.username + "&password=" + this.password;
-
-                            let loginHeaders = new Headers();
-                            loginHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
-
-                            this.http.post('http://104.154.34.219:8080/auth', creds, {
-                                headers: loginHeaders
-                            })
-                                .map(res => res.json())
-                                .subscribe(
-                                data => console.log(data),
-                                err => {
-                                    window.plugin.notification.local.add({ title: "Login failed", message: 'Login failed, please try again!' });
-                                },
-                                () => {
-
-                                }
-                                );
-                            
-                            
-                            let value = "name=" + this.viewCtrl.data.name;
-
-                            let headers = new Headers();
-                            headers.append('Content-Type', 'application/x-www-form-urlencoded');
-
-                            this.http.post('http://104.154.34.219:8080/star', value, {
-                                headers: headers
-                            })
-                                .map(res => res.json())
-                                .subscribe(
-                                data => console.log(data),
-                                err => console.log("didnt work"),
-                                () => window.plugins.toast.showShortBottom('Repo Starred')
-                                );
-                        }
-                    }
-                ]
-            });
-            //this.nav.present(confirm);
-            setTimeout(() => {
-                this.nav.present(confirm);
-            }, 700)
-        }
-        else {
-            this.viewCtrl.dismiss();
-
-            let prompt = Alert.create({
-                title: 'Error',
-                body: "You must login to star a repository.",
-                inputs: [
-                    {
-                        name: 'username',
-                        placeholder: 'username'
-                    },
-                    {
-                        name: "password",
-                        placeholder: "password",
-                        type: "password"
-                    }
-                ],
-                buttons: [
-                    {
-                        text: 'Cancel',
-                        handler: data => {
-                        }
-                    },
-                    {
-                        text: 'Login',
-                        handler: data => {
-                            let creds = "username=" + data.username + "&password=" + data.password;
-
-                            let headers = new Headers();
-                            headers.append('Content-Type', 'application/x-www-form-urlencoded');
-
-                            this.http.post('http://104.154.34.219:8080/auth', creds, {
-                                headers: headers
-                            })
-                                .map(res => res.json())
-                                .subscribe(
-                                data => console.log(data),
-                                err => {
-                                    window.plugin.notification.local.add({ title: "Login failed", message: 'Login failed, please try again!' });
-                                },
-                                () => {
-                                    localStorage.setItem("authed", "true");
-                                    window.plugins.toast.showShortBottom('Logged In')
-                                }
-                                );
-
-                        }
-                    }
-                ]
-            });
-            //this.nav.present(confirm);
-            setTimeout(() => {
-                this.nav.present(prompt);
-            }, 700)
-        }
-
-    }
-
-    close() {
         this.viewCtrl.dismiss();
+
+        let confirm = Alert.create({
+            title: 'Star this repository?',
+            message: 'Are you sure you would like to star this repository?',
+            buttons: [
+                {
+                    text: 'No',
+                    handler: () => {
+                    }
+                },
+                {
+                    text: 'Yes',
+                    handler: () => {
+                        let creds = "username=" + this.username + "&password=" + this.password;
+
+                        let loginHeaders = new Headers();
+                        loginHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
+
+                        this.http.post('http://104.154.34.219:8080/auth', creds, {
+                            headers: loginHeaders
+                        })
+                            .map(res => res.json())
+                            .subscribe(
+                            data => console.log(data),
+                            err => {
+                                window.plugin.notification.local.add({ title: "Login failed", message: 'Login failed, please try again!' });
+                            },
+                            () => {
+
+                            }
+                            );
+
+
+                        let value = "name=" + this.viewCtrl.data.name;
+
+                        let headers = new Headers();
+                        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+                        this.http.post('http://104.154.34.219:8080/star', value, {
+                            headers: headers
+                        })
+                            .map(res => res.json())
+                            .subscribe(
+                            data => console.log(data),
+                            err => console.log("didnt work"),
+                            () => window.plugins.toast.showShortBottom('Repo Starred')
+                            );
+                    }
+                }
+            ]
+        });
+        //this.nav.present(confirm);
+        setTimeout(() => {
+            this.nav.present(confirm);
+        }, 700)
     }
+
 }

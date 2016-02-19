@@ -30,20 +30,15 @@ export class Login {
                 window.plugin.notification.local.add({ title: "Login failed", message: 'Login failed, please try again!' });
             },
             () => {
-                localStorage.setItem("authed", "true")
                 localStorage.setItem("username", username);
                 localStorage.setItem("password", password);
                 this.nav.pop();
                 this.nav.push(Page1);
                 this.nav.setRoot(Page1);
-
             }
             );
 
     }
-    
-    focusFix() {
-        
-    }
+
 
 }
