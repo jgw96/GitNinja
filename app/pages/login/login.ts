@@ -1,16 +1,17 @@
-import {Page, NavController} from 'ionic-framework/ionic';
+import {Page, NavController, IonicApp} from 'ionic-framework/ionic';
 import {Page1} from '../../pages/page1/page1';
 import {Http, Headers} from 'angular2/http';
 import 'rxjs/add/operator/map';
 
 @Page({
-    templateUrl: 'build/pages/login/login.html',
+    templateUrl: 'build/pages/login/login.html'
 })
 export class Login {
 
-    constructor(public nav: NavController, public http: Http) {
+    constructor(public nav: NavController, public http: Http, public app: IonicApp) {
         this.nav = nav;
         this.http = http;
+        this.app.getComponent('leftMenu').enable(false);
     }
 
     login(username: string, password: string) {
@@ -32,6 +33,7 @@ export class Login {
             () => {
                 localStorage.setItem("username", username);
                 localStorage.setItem("password", password);
+                this.app.getComponent('leftMenu').enable(true);
                 this.nav.pop();
                 this.nav.push(Page1);
                 this.nav.setRoot(Page1);
