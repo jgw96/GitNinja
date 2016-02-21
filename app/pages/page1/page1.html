@@ -53,9 +53,9 @@
 </ion-content>
 
 <section id="inputSection">
-    <ion-input id="searchInput">
-        <input #searchTerms type="text" placeholder="chat, typescript">
-    </ion-input>
+    <ion-item id="searchInput">
+        <ion-input #searchTerms type="text" placeholder="chat, typescript"></ion-input>
+    </ion-item>
 
     <button (click)="search(searchTerms.value)" secondary fab fab-bottom fab-right>
         <ion-icon name="search"></ion-icon>

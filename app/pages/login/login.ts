@@ -11,7 +11,7 @@ export class Login {
     constructor(public nav: NavController, public http: Http, public app: IonicApp) {
         this.nav = nav;
         this.http = http;
-        this.app.getComponent('leftMenu').enable(false);
+        //this.app.getComponent('leftMenu').enable(false);
     }
 
     login(username: string, password: string) {
@@ -33,7 +33,7 @@ export class Login {
             () => {
                 localStorage.setItem("username", username);
                 localStorage.setItem("password", password);
-                this.app.getComponent('leftMenu').enable(true);
+                //this.app.getComponent('leftMenu').enable(true);
                 this.nav.setRoot(Page1);
             }
             );

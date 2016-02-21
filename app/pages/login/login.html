@@ -1,11 +1,13 @@
 <img id="loginImage" src="icon.png">
 
-<ion-input id="usernameInput">
-    <input #username type="text" placeholder="username">
-</ion-input>
+<ion-item id="usernameInput">
+    <ion-label floating>Username</ion-label>
+    <ion-input #username type="text"></ion-input>
+</ion-item>
 
-<ion-input id="passwordInput">
-    <input #password type="password" placeholder="password">
-</ion-input>
+<ion-item id="passwordInput">
+    <ion-label floating>Password</ion-label>
+    <ion-input #password type="password"></ion-input>
+</ion-item>
 
 <button id="loginButton" (click)="login(username.value, password.value)" block>Login</button>
