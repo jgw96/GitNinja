@@ -1,5 +1,5 @@
 <?xml version="2.0" encoding="UTF-8" standalone="yes"?>
-<widget id="io.ionic.gitninja" android-versionCode="200009"  version="2.1.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" >
+<widget id="io.ionic.gitninja" android-versionCode="2000010"  version="2.1.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" >
   <name>GitNinja</name>
   <description>GitNinja is your virtual Github friend! GitNinja gives you the best and most beautiful Github client available on Android!</description>
   <author email="jgw9617@gmail.com" href="http://ionicframework.com/">Justin Willis</author>

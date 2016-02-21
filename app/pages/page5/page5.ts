@@ -123,7 +123,7 @@ export class Page5 {
     login() {
         let prompt = Alert.create({
             title: 'Login',
-            body: "Login to Github",
+            message: "Login to Github",
             inputs: [
                 {
                     name: 'username',
