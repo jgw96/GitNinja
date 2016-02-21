@@ -34,8 +34,6 @@ export class Login {
                 localStorage.setItem("username", username);
                 localStorage.setItem("password", password);
                 this.app.getComponent('leftMenu').enable(true);
-                this.nav.pop();
-                this.nav.push(Page1);
                 this.nav.setRoot(Page1);
             }
             );
