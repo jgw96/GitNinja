@@ -1,14 +1,11 @@
-<ion-content padding class="login">
-    
-    <img id="loginImage" src="icon.png">
+<img id="loginImage" src="icon.png">
 
-    <ion-input id="usernameInput">
-        <input #username type="text" placeholder="username">
-    </ion-input>
+<ion-input id="usernameInput">
+    <input #username type="text" placeholder="username">
+</ion-input>
 
-    <ion-input id="passwordInput">
-        <input #password type="password" placeholder="password">
-    </ion-input>
+<ion-input id="passwordInput">
+    <input #password type="password" placeholder="password">
+</ion-input>
 
-    <button id="loginButton" (click)="login(username.value, password.value)" block>Login</button>
-</ion-content>
+<button id="loginButton" (click)="login(username.value, password.value)" block>Login</button>
