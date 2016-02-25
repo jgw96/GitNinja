@@ -191,6 +191,10 @@ class StarModal {
             })
 
     }
+    
+    close() {
+        this.viewCtrl.dismiss();
+    }
 
     star() {
         this.viewCtrl.dismiss();
