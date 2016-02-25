@@ -23,31 +23,33 @@
     </div>
 
     <ion-list [hidden]="loading">
-        <ion-item *ngFor="#repo of repos">
-            <ion-icon (click)="share(repo.clone_url)" id="share" item-right name="share"></ion-icon>
-            <ion-avatar item-left>
-                <img src={{repo.owner.avatar_url}}>
-            </ion-avatar>
-            <h2>{{repo.name}}</h2>
-            <h3>{{repo.owner.login}}</h3>
-            <p>{{repo.description}}</p>
+       <!-- <ion-item-sliding> -->
+            <ion-item *ngFor="#repo of repos">
+                <ion-icon (click)="share(repo.clone_url)" id="share" item-right name="share"></ion-icon>
+                <ion-avatar item-left>
+                    <img src={{repo.owner.avatar_url}}>
+                </ion-avatar>
+                <h2>{{repo.name}}</h2>
+                <h3>{{repo.owner.login}}</h3>
+                <p id="description">{{repo.description}}</p>
 
-            <button id="starIcon" (click)="getStars(repo.stargazers_url, repo.full_name)" clear>
-                <ion-icon id="starIcon" name="star"></ion-icon>
-                <span>
+                <button id="starIcon" (click)="getStars(repo.stargazers_url, repo.full_name)" clear>
+                    <ion-icon id="starIcon" name="star"></ion-icon>
+                    <span>
                     {{repo.stargazers_count}}
                 </span>
-            </button>
-            <button id="forks" (click)="getForks(repo.forks_url)" clear>
-                <ion-icon name="shuffle"></ion-icon>
-                <span>
+                </button>
+                <button id="forks" (click)="getForks(repo.forks_url)" clear>
+                    <ion-icon name="shuffle"></ion-icon>
+                    <span>
                     {{repo.forks_count}}
                 </span>
-            </button>
-            <a id="stars" href={{repo.clone_url}}>
+                </button>
+                <a id="stars" href={{repo.clone_url}}>
                 View on Github
             </a>
-        </ion-item>
+            </ion-item>
+        <!--</ion-item-sliding>-->
     </ion-list>
 
 </ion-content>
