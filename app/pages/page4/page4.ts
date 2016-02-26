@@ -53,6 +53,10 @@ export class Page4 {
             })
 
     }
+    
+    visit(url: string) {
+        window.open(url, "_blank");
+    }
 
     makeRepo() {
         let prompt = Alert.create({

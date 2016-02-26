@@ -108,5 +108,9 @@ export class Page3 {
         });
         this.nav.present(confirm);
     }
+    
+    visit(url: string) {
+        window.open(url, "_blank");
+    }
 
 }

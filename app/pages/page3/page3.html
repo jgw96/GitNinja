@@ -30,15 +30,15 @@
             </ion-avatar>
             <h2>{{user.login}}</h2>
             <h3>{{user.type}}</h3>
-            <a id="userLink" href={{user.html_url}}>Visit on Github</a>
+            <a id="userLink" (click)="visit(user.html_url)">Visit on Github</a>
         </ion-item>
     </ion-list>
 </ion-content>
 
 <section id="inputSection">
-    <ion-input id="searchInput">
-        <input #searchTerm type="text" placeholder="justin">
-    </ion-input>
+    <ion-item id="searchInput">
+        <ion-input #searchTerm type="text" placeholder="justin"></ion-input>
+    </ion-item>
 
     <button (click)="search(searchTerm.value)" secondary fab fab-bottom fab-right>
         <ion-icon name="search"></ion-icon>

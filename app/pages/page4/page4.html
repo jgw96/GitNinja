@@ -42,7 +42,7 @@
                     {{repo.forks_count}}
                 </span>
             </button>
-            <a id="stars" href={{repo.clone_url}}>
+            <a id="stars" (click)="visit(repo.html_url)">
                 View on Github
             </a>
         </ion-item>
