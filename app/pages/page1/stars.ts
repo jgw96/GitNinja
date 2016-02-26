@@ -1,4 +1,4 @@
-import {Page, NavController, ViewController, Modal} from 'ionic-framework/ionic';
+import {Page, NavController, ViewController, Modal, Alert} from 'ionic-framework/ionic';
 import {Http, Headers} from 'angular2/http';
 import 'rxjs/add/operator/map';
 

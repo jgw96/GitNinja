@@ -4,10 +4,12 @@ import 'rxjs/add/operator/map';
 
 import {MyModal} from "../page1/forks";
 import {StarModal} from "../page1/stars";
+import {IssueModal} from "../page1/issues";
+import {ContribModal} from "../page1/contribs";
 
 @Page({
     templateUrl: 'build/pages/page1/page1.html',
-    directives:[MyModal, StarModal]
+    directives: [MyModal, StarModal, IssueModal]
 })
 export class Page1 {
     http: any;
@@ -37,7 +39,78 @@ export class Page1 {
     }
 
     otherActions(name: string) {
-       
+
+        let actionSheet = ActionSheet.create({
+            title: 'Others',
+            buttons: [
+                {
+                    text: 'Issues',
+                    icon: "alert",
+                    handler: () => {
+                        let modal = Modal.create(IssueModal, name);
+                        this.nav.present(modal)
+                    }
+                }, {
+                    text: 'Contributors',
+                    icon: "people",
+                    handler: () => {
+                        let modal = Modal.create(ContribModal, name);
+                        this.nav.present(modal);
+                    }
+                }, {
+                    text: 'Readme',
+                    icon: "book",
+                    handler: () => {
+                        let creds = "username=" + this.username + "&password=" + this.password;
+
+                        let loginHeaders = new Headers();
+                        loginHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
+
+                        this.http.post('http://104.154.34.219:8080/auth', creds, {
+                            headers: loginHeaders
+                        })
+                            .map(res => res.json())
+                            .subscribe(
+                            data => console.log(data),
+                            err => {
+                                window.plugin.notification.local.add({ title: "Login failed", message: 'Login failed, please try again!' });
+                            },
+                            () => {
+
+                            }
+                            );
+
+                        let value = "repo=" + name;
+
+                        let headers = new Headers();
+                        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+                        this.http.post('http://104.154.34.219:8080/readme', value, {
+                            headers: headers
+                        })
+                            .map(res => res.json())
+                            .subscribe(
+                            data => {
+                                console.log(data);
+                                window.open(data.html_url, "_blank");
+                            },
+                            err => console.log("didnt work"),
+                            () => {
+                                console.log("done");
+                            }
+                            );
+                    }
+                }, {
+                    text: 'Cancel',
+                    style: 'cancel',
+                    icon: "close",
+                    handler: () => {
+                        console.log('Cancel clicked');
+                    }
+                }
+            ]
+        });
+        this.nav.present(actionSheet);
     }
 
     search(searchTerms: string) {

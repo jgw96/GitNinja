@@ -35,6 +35,10 @@ ion-item-content {
     margin-top: 3.7%;
 }
 
+#userBody, #userTitle {
+    white-space: normal;
+}
+
 #userLink {
     display: block;
     margin-top: 3%;
@@ -47,8 +51,12 @@ ion-item-content {
 
 #forks {
     position: absolute;
-    left: 45%;
+    left: 50%;
     margin-top: 1.2rem;
+}
+
+.action-sheet-title {
+    color: #2196F3;
 }
 
 #others {
