@@ -41,7 +41,7 @@ export class Page1 {
     otherActions(name: string) {
 
         let actionSheet = ActionSheet.create({
-            title: 'Others',
+            title: 'More',
             buttons: [
                 {
                     text: 'Issues',
