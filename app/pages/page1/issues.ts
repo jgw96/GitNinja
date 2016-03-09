@@ -1,4 +1,4 @@
-import {Page, NavController, ViewController, Modal} from 'ionic-framework/ionic';
+import {Page, NavController, ViewController, Modal, Alert} from 'ionic-framework/ionic';
 import {Http, Headers} from 'angular2/http';
 import 'rxjs/add/operator/map';
 
@@ -23,7 +23,13 @@ import 'rxjs/add/operator/map';
             <h3 id="userBody">{{issue.body}}</h3>
         </ion-item>
     </ion-list>
-  </ion-content>`
+  </ion-content>
+  
+  <button (click)="createIssue()" secondary fab fab-bottom fab-right>
+      <ion-icon name="add"></ion-icon>
+  </button>
+  
+  `
 })
 export class IssueModal {
     issues: Object[];
@@ -80,6 +86,70 @@ export class IssueModal {
             }
             );
 
+    }
+
+    createIssue() {
+        let prompt = Alert.create({
+            title: 'New Issue',
+            message: "Create a new issue",
+            inputs: [
+                {
+                    name: 'title',
+                    placeholder: 'Title'
+                },
+                {
+                    name: "body",
+                    placeholder: "Body"
+                }
+            ],
+            buttons: [
+                {
+                    text: 'Cancel',
+                    handler: data => {
+                        console.log('Cancel clicked');
+                    }
+                },
+                {
+                    text: 'Save',
+                    handler: data => {
+                        let creds = "username=" + this.username + "&password=" + this.password;
+
+                        let loginHeaders = new Headers();
+                        loginHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
+
+                        this.http.post('http://104.154.34.219:8080/auth', creds, {
+                            headers: loginHeaders
+                        })
+                            .map(res => res.json())
+                            .subscribe(
+                            data => console.log(data),
+                            err => {
+                                window.plugin.notification.local.add({ title: "Login failed", message: 'Login failed, please try again!' });
+                            },
+                            () => {
+//finish
+                            }
+                            );
+
+
+                        let value = "name=" + this.viewCtrl.data.name;
+
+                        let headers = new Headers();
+                        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+                        this.http.post('http://104.154.34.219:8080/star', value, {
+                            headers: headers
+                        })
+                            .map(res => res.json())
+                            .subscribe(
+                            data => console.log(data),
+                            err => console.log("didnt work"),
+                            () => window.plugins.toast.showShortBottom('Repo Starred')
+                            );
+                    }
+                }
+            ]
+        });
     }
 
     close() {

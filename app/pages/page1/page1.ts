@@ -9,7 +9,7 @@ import {ContribModal} from "../page1/contribs";
 
 @Page({
     templateUrl: 'build/pages/page1/page1.html',
-    directives: [MyModal, StarModal, IssueModal]
+    directives: [MyModal, StarModal, IssueModal, ContribModal]
 })
 export class Page1 {
     http: any;
