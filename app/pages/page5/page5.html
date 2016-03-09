@@ -83,7 +83,6 @@
     <ion-card [hidden]="loading || failed">
         <ion-card-content>
             <h2 class="card-title">Notifications</h2>
-            <span id="notifications">{{notifyLength}}</span>
             <ion-list>
                 <ion-item *ngFor="#notification of notifications">
                     <h2>{{notification.reason}}</h2>
